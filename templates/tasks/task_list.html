@@ -1,0 +1,52 @@
+{% extends 'tasks/base.html' %}
+
+{% block content %}
+  <section>
+    <h2>Task List</h2>
+    <a href="{% url 'tasks:task_create' %}">Create New Task</a>
+
+    <form method='get'>
+      <label for='search'>Search:</label>
+      <input type='text' id='search' name='search' value='{{ request.GET.search }}'>
+
+      <label for='sort_by'>Sort by:</label>
+      <select id='sort_by' name='sort_by'>
+          <option value='-created_at' {% if request.GET.sort_by == '-created_at' %}selected{% endif %}>Date created (newest first)</option>
+          <option value='created_at' {% if request.GET.sort_by == 'created_at' %}selected{% endif %}>Date created (oldest first)</option>
+          <option value='-updated_at' {% if request.GET.sort_by == '-updated_at' %}selected{% endif %}>Date updated (newest first)</option>
+          <option value='updated_at' {% if request.GET.sort_by == 'updated_at' %}selected{% endif %}>Date updated (oldest first)</option>
+          <option value='-completed' {% if request.GET.sort_by == '-completed' %}selected{% endif %}>Completed</option>
+          <option value='completed' {% if request.GET.sort_by == 'completed' %}selected{% endif %}>Not completed</option>
+      </select>
+      <input type='submit' value='Update'>
+    </form>
+
+    <ul>
+      {% for task in object_list %}
+        <article>
+          <h3><strong>{{ task.title }} by {{ task.author }}</strong></h3>
+          <p><pre>{{ task.description }}</pre></p>
+          <p><strong>Created at:</strong> {{ task.created_at|date:'SHORT_DATETIME_FORMAT' }}</p>
+          <p><strong>Last updated:</strong> {{ task.updated_at|date:'SHORT_DATETIME_FORMAT' }}</p>
+          <p><strong>Completed:</strong> {{ task.completed }}</p>
+          <a href="{% url 'tasks:task_update' task.id %}">Update</a>
+          <a href="{% url 'tasks:task_delete' task.id %}">Delete</a>
+        </article>
+        {% empty %}
+        <li>No tasks yet.</li>
+      {% endfor %}
+    </ul>
+  </section>
+
+  <nav>
+    {% if page_obj.has_previous %}
+      <a href='?page=1'>First</a>
+      <a href='?page={{ page_obj.previous_page_number }}'>Previous</a>
+    {% endif %}
+    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+    {% if page_obj.has_next %}
+      <a href='?page={{ page_obj.next_page_number }}'>Next</a>
+      <a href='?page={{ page_obj.paginator.num_pages }}'>Last</a>
+    {% endif %}
+  </nav>
+{% endblock %}

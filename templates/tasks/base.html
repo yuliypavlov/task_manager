@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+    <meta charset='UTF-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <title>Document</title>
+    <!-- Minty Bootstrap CSS -->
+    <link rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/minty/bootstrap.min.css'>
+    <link href='https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap' rel='stylesheet'>
+    <style>
+        body {
+            background: linear-gradient(to right, #f8f9fa, #e9ecef, #dee2e6, #ced4da, #adb5bd);
+        }
+        .slogan {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 1.5em;
+            color: #6c757d;
+            margin-left: 50px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class='navbar navbar-expand-lg navbar-light bg-light'>
+            <a class='navbar-brand btn btn-primary' href='{% url 'tasks:task_list' %}'>Task Manager</a>
+            <div class='collapse navbar-collapse'>
+                {% if user.is_authenticated %}
+                    <form class='form-inline my-2 my-lg-0' method='post' action='{% url 'tasks:logout' %}'>
+                        {% csrf_token %}
+                        <button class='btn btn-outline-success my-2 my-sm-0' type='submit'>Logout</button>
+                    </form>
+                    <a href='{% url 'tasks:user_profile' request.user.username %}' class='btn btn-primary'>View Profile</a>
+                    <span class='slogan font-weight-bold'>Conquer Your Day, Unleash Your Potential with Task Manager</span>
+                {% else %}
+                    <a class='btn btn-outline-success my-2 my-sm-0' href='{% url 'tasks:login' %}'>Login</a>
+                    <a class='btn btn-outline-success my-2 my-sm-0' href='{% url 'tasks:register' %}'>Register</a>
+                {% endif %}
+            </div>
+        </nav>
+    </header>
+    <main class='w-50 mx-auto'>
+        {% block content %}{% endblock %}
+    </main>
+    <footer>
+        <!-- Your footer content... -->
+    </footer>
+    <!-- Bootstrap JS and jQuery -->
+    <script src='https://code.jquery.com/jquery-3.5.1.slim.min.js'></script>
+    <script src='https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js'></script>
+</body>
+</html>
