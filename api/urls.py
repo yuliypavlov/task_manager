@@ -1,6 +1,5 @@
 """
 This module defines the URL routes for the 'api' application.
-
 The routes are defined using a combination of Django's path function
 and Django Rest Framework's DefaultRouter.
 The DefaultRouter automatically generates the URL routes for the UserViewSet

@@ -1,6 +1,5 @@
 """
 This module contains pytest fixtures for the 'tasks' application.
-
 It includes fixtures for creating a user, an author, an author client
 and a task.
 """
